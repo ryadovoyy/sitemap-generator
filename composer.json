@@ -1,0 +1,20 @@
+{
+    "name": "ryadovoyy/sitemap-generator",
+    "description": "A PHP library for generating sitemaps in XML, CSV and JSON formats",
+    "type": "library",
+    "require": {
+        "php": "^8.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5",
+        "phpstan/phpstan": "^2.1",
+        "friendsofphp/php-cs-fixer": "^3.76"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ryadovoyy\\SitemapGenerator\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
