@@ -1,2 +1,5 @@
 /vendor
+/coverage
+/.phpunit.cache
 /.idea
+coverage.txt
