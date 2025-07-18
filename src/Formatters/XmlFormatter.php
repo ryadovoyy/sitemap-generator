@@ -7,12 +7,17 @@ namespace Ryadovoyy\SitemapGenerator\Formatters;
  */
 class XmlFormatter implements FormatterInterface
 {
+    private \DOMDocument $dom;
+
+    public function __construct()
+    {
+        $this->dom = new \DOMDocument('1.0', 'UTF-8');
+        $this->dom->formatOutput = true;
+    }
+
     public function format(array $items): string
     {
-        $dom = new \DOMDocument('1.0', 'UTF-8');
-        $dom->formatOutput = true;
-
-        $urlset = $dom->createElement('urlset');
+        $urlset = $this->dom->createElement('urlset');
         $urlset->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
         $urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
         $urlset->setAttribute(
@@ -21,30 +26,33 @@ class XmlFormatter implements FormatterInterface
         );
 
         foreach ($items as $item) {
-            $url = $dom->createElement('url');
+            $url = $this->dom->createElement('url');
 
-            $loc = $dom->createElement('loc', $item->getLoc());
-            $url->appendChild($loc);
+            $this->appendChildToUrl($url, 'loc', $item->getLoc());
 
             if ($item->getLastmod() !== null) {
-                $lastmod = $dom->createElement('lastmod', $item->getLastmod());
-                $url->appendChild($lastmod);
+                $this->appendChildToUrl($url, 'lastmod', $item->getLastmod());
             }
 
             if ($item->getPriority() !== null) {
-                $priority = $dom->createElement('priority', $item->getPriority());
-                $url->appendChild($priority);
+                $this->appendChildToUrl($url, 'priority', $item->getPriority());
             }
 
             if ($item->getChangefreq() !== null) {
-                $changefreq = $dom->createElement('changefreq', $item->getChangefreq());
-                $url->appendChild($changefreq);
+                $this->appendChildToUrl($url, 'changefreq', $item->getChangefreq());
             }
 
             $urlset->appendChild($url);
         }
 
-        $dom->appendChild($urlset);
-        return $dom->saveXML();
+        $this->dom->appendChild($urlset);
+        return $this->dom->saveXML();
+    }
+
+    private function appendChildToUrl(\DOMElement $url, string $childName, string $childValue): void
+    {
+        $child = $this->dom->createElement($childName);
+        $child->appendChild($this->dom->createTextNode($childValue));
+        $url->appendChild($child);
     }
 }

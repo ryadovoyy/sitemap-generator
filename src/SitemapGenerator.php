@@ -31,7 +31,8 @@ class SitemapGenerator
      * @param string $filePath Path where to save the generated sitemap
      * @throws UnsupportedFormatException
      */
-    public function __construct(array $pages, SitemapFormat $format, string $filePath) {
+    public function __construct(array $pages, SitemapFormat $format, string $filePath)
+    {
         $this->pages = $pages;
         $this->filePath = $filePath;
 
